@@ -4,6 +4,14 @@
   padding: 0;
 }
 
+body {
+  padding: 60px;
+}
+
+ul.movie-list {
+  margin-top: 50px;
+}
+
 li.movie {
   margin-bottom: 20px;
 }
