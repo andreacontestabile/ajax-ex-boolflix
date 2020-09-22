@@ -12,7 +12,22 @@
   <title>Boolflix</title>
 </head>
 <body>
+  <main>
+    <ul class="movie-list">
 
+    </ul>
+  </main>
+
+  <script id="movie-template" type="text/x-handlebars-template">
+    <li class="movie">
+      <ul class="movie-info">
+        <li>Titolo: {{title}}</li>
+        <li>Titolo Originale: {{original_title}}</li>
+        <li>Lingua Originale: {{original_language}}</li>
+        <li>Voto Medio: {{vote_average}}</li>
+      </ul>
+    </li>
+  </script>
   <script src="js/script.js" charset="utf-8"></script>
 </body>
 </html>
