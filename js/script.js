@@ -64,11 +64,10 @@ $(document).ready(function() {
      //   "original_language": results[i].original_language,
      //   "vote_average": results[i].vote_average
      // };
-     var finalVote = renderVote(results[i].vote_average);
-     console.log(finalVote);
+     results[i].vote_average = renderVote(results[i].vote_average);
+
      // Compilo il template Handlebars passando direttamente ogni oggetto/film (le chiavi corrispondono)
-     var html = $(template(results[i]));
-     $(html).find(".movie-vote").append(finalVote);
+     var html = template(results[i]);
      // Faccio l'append del template compilato all'interno della lista dei film
      $("ul.movie-list").append(html);
    }
@@ -76,17 +75,17 @@ $(document).ready(function() {
 
  function renderVote(vote) {
    var newVote = Math.ceil(vote / 2);
-
-   var voteHtml = $("<span></span>");
+   
+   var star = "<i class='fas fa-star'></i>";
+   var emptyStar = "<i class='far fa-star'></i>";
+   var voteHtml = "";
 
    for (var i = 0; i < newVote; i++) {
-     var star = $("<i class='fas fa-star'></i>");
-     voteHtml.append(star);
+     voteHtml += star;
    }
-   
+
    for (var i = 0; i < (5 - newVote); i++) {
-       var emptyStar = $("<i class='far fa-star'></i>");
-       voteHtml.append(emptyStar);
+     voteHtml += emptyStar;
    }
 
    return voteHtml;
