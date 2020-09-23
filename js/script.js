@@ -1,5 +1,9 @@
 $(document).ready(function() {
 
+  // Conservo in due variabili gli url relativi all'API di TMDB
+  var urlMovies = "https://api.themoviedb.org/3/search/movie"
+  var urlTV = "https://api.themoviedb.org/3/search/tv";
+
   // Inizializzazione template Handlebars
   var source = $("#movie-template").html();
   var template = Handlebars.compile(source);
@@ -10,8 +14,8 @@ $(document).ready(function() {
     if ((e.which == 13) && ($("#search").val().length > 0)) {
       // Salvo in una variabile il contenuto del campo search
       var searchQuery = $("#search").val();
-      // Eseguo la funzione searchMovies passando come query di ricerca il contenuto del campo search
-      searchMovies(searchQuery);
+      // Eseguo la funzione che svuota la pagina ed effettua una nuova ricerca
+      clearAndSearch(searchQuery);
     }
   });
 
@@ -21,18 +25,17 @@ $(document).ready(function() {
     if ($("#search").val().length > 0) {
       // Salvo in una variabile il contenuto del campo search
       var searchQuery = $("#search").val();
-      // Eseguo la funzione searchMovies passando come query di ricerca il contenuto del campo search
-      searchMovies(searchQuery);
+      // Eseguo la funzione che svuota la pagina ed effettua una nuova ricerca
+      clearAndSearch(searchQuery);
     }
   });
 
-
   // Funzione searchMovies
-  function searchMovies(query) {
+  function search(url, query) {
     // Effettuo la chiamata ajax all'API TMDB.org
     $.ajax(
       {
-       "url": "https://api.themoviedb.org/3/search/movie",
+       "url": url,
        "method": "GET",
        "data": {
          // Api Key
@@ -42,7 +45,7 @@ $(document).ready(function() {
        },
        "success": function(data) {
          // Al successo, eseguo la funzione renderMovies, passando come argomento l'array dei risultati
-         renderMovies(data.results);
+         renderSearch(data.results);
        },
        "error": function() {
          // All'errore, eseguo un alert di errore
@@ -53,9 +56,7 @@ $(document).ready(function() {
  }
 
  // Funzione renderMovies
- function renderMovies(results) {
-   // Svuoto la lista dei film ul.movie-list
-   $("ul.movie-list").empty();
+ function renderSearch(results) {
    // Effettuo un ciclo dell'array di risultati ottenuto dalla chiamata ajax
    for (var i = 0; i < results.length; i++) {
      var context = {
@@ -64,6 +65,12 @@ $(document).ready(function() {
        "original_language": renderFlag(results[i].original_language),
        "vote_average": renderVote(results[i].vote_average)
      };
+     // Se invece l'oggetto ha la proprietà "original_name" (invece di original_title)
+     if (results[i].hasOwnProperty("original_name")) {
+       // Modifico il context con le nuove proprietà/chiavi
+       context.title = results[i].name;
+       context.original_title = results[i].original_name;
+     }
      // Compilo il template Handlebars passando direttamente ogni oggetto/film (le chiavi corrispondono)
      var html = template(context);
      // Faccio l'append del template compilato all'interno della lista dei film
@@ -71,33 +78,54 @@ $(document).ready(function() {
    }
  }
 
+ // Funzione renderVote
  function renderVote(vote) {
+   // Dato un voto (da 1 a 10), lo divido per 2 (ottenendo un voto da 1 a 5, arrotondato per eccesso)
    var newVote = Math.ceil(vote / 2);
-
+   // Creo due stringhe relative agli elementi stella
    var star = "<i class='fas fa-star'></i>";
    var emptyStar = "<i class='far fa-star'></i>";
+   // Creo una variabile che conterrà l'elemento finale
    var voteHtml = "";
-
-   for (var i = 0; i < newVote; i++) {
-     voteHtml += star;
+   // Per un numero di volte pari al voto, aggiungo una stella piena
+   for (var i = 0; i < 5; i++) {
+     if (i < newVote) {
+       voteHtml += star;
+     } else {
+       voteHtml += emptyStar
+     }
    }
-
-   for (var i = 0; i < (5 - newVote); i++) {
-     voteHtml += emptyStar;
-   }
-
    return voteHtml;
  }
 
+ // Funzione renderFlag
  function renderFlag(lang) {
+   // Definisco un array contenente tutte le bandiere disponibili
    var flags = ["ar", "cs", "da", "de", "el", "en", "es", "et", "fa", "fi", "fr", "hi", "is", "it", "ja", "ko", "lt", "nl", "no", "pl", "pt", "ru", "sv", "th", "tr", "uk", "us", "vi", "zh"];
+   // Se l'array include la stringa ricevuta dall'oggetto json
    if (flags.includes(lang)) {
+     // allora restituisco l'immagine della bandiera
      return ("<img class='language-flag' src='img/" + lang + ".png'>");
    } else {
+     // altrimenti restituisco la stringa stessa
      return lang;
    }
  }
 
+ // Funzione clearPage
+ function clearPage() {
+   // Svuoto la lista dei risultati nella pagina
+   $(".movie-list").empty();
+ }
 
-
+ // Funzione clearAndSearch
+ function clearAndSearch(query) {
+   // Svuoto la lista dei risultati con la funzione clearPage()
+   clearPage();
+   // Eseguo la funzione search (movies e TV) passando i relativi URL
+   // e come query di ricerca il contenuto del campo search
+   search(urlMovies, query);
+   search(urlTV, query);
+ }
+ 
 });
