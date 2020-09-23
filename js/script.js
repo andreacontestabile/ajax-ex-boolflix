@@ -58,16 +58,14 @@ $(document).ready(function() {
    $("ul.movie-list").empty();
    // Effettuo un ciclo dell'array di risultati ottenuto dalla chiamata ajax
    for (var i = 0; i < results.length; i++) {
-     // var context = {
-     //   "title": results[i].title,
-     //   "original_title": results[i].original_title,
-     //   "original_language": results[i].original_language,
-     //   "vote_average": results[i].vote_average
-     // };
-     results[i].vote_average = renderVote(results[i].vote_average);
-
+     var context = {
+       "title": results[i].title,
+       "original_title": results[i].original_title,
+       "original_language": renderFlag(results[i].original_language),
+       "vote_average": renderVote(results[i].vote_average)
+     };
      // Compilo il template Handlebars passando direttamente ogni oggetto/film (le chiavi corrispondono)
-     var html = template(results[i]);
+     var html = template(context);
      // Faccio l'append del template compilato all'interno della lista dei film
      $("ul.movie-list").append(html);
    }
@@ -75,7 +73,7 @@ $(document).ready(function() {
 
  function renderVote(vote) {
    var newVote = Math.ceil(vote / 2);
-   
+
    var star = "<i class='fas fa-star'></i>";
    var emptyStar = "<i class='far fa-star'></i>";
    var voteHtml = "";
@@ -89,6 +87,15 @@ $(document).ready(function() {
    }
 
    return voteHtml;
+ }
+
+ function renderFlag(lang) {
+   var flags = ["ar", "cs", "da", "de", "el", "en", "es", "et", "fa", "fi", "fr", "hi", "is", "it", "ja", "ko", "lt", "nl", "no", "pl", "pt", "ru", "sv", "th", "tr", "uk", "us", "vi", "zh"];
+   if (flags.includes(lang)) {
+     return ("<img class='language-flag' src='img/" + lang + ".png'>");
+   } else {
+     return lang;
+   }
  }
 
 

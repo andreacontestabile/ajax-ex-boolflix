@@ -15,3 +15,8 @@ ul.movie-list {
 li.movie {
   margin-bottom: 20px;
 }
+
+img.language-flag {
+  width: 30px;
+  vertical-align: middle;
+}
