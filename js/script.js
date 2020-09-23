@@ -64,11 +64,34 @@ $(document).ready(function() {
      //   "original_language": results[i].original_language,
      //   "vote_average": results[i].vote_average
      // };
+     var finalVote = renderVote(results[i].vote_average);
+     console.log(finalVote);
      // Compilo il template Handlebars passando direttamente ogni oggetto/film (le chiavi corrispondono)
-     var html = template(results[i]);
+     var html = $(template(results[i]));
+     $(html).find(".movie-vote").append(finalVote);
      // Faccio l'append del template compilato all'interno della lista dei film
      $("ul.movie-list").append(html);
    }
  }
+
+ function renderVote(vote) {
+   var newVote = Math.ceil(vote / 2);
+
+   var voteHtml = $("<span></span>");
+
+   for (var i = 0; i < newVote; i++) {
+     var star = $("<i class='fas fa-star'></i>");
+     voteHtml.append(star);
+   }
+   
+   for (var i = 0; i < (5 - newVote); i++) {
+       var emptyStar = $("<i class='far fa-star'></i>");
+       voteHtml.append(emptyStar);
+   }
+
+   return voteHtml;
+ }
+
+
 
 });
