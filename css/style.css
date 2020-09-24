@@ -10,10 +10,15 @@ body {
 
 ul.movie-list {
   margin-top: 50px;
+  list-style: none;
 }
 
-li.movie {
+li.results-item {
   margin-bottom: 20px;
+}
+
+ul.item-info {
+  list-style: none;
 }
 
 img.language-flag {
@@ -21,6 +26,10 @@ img.language-flag {
   vertical-align: middle;
 }
 
-li.movie-vote i {
+li.item-vote i {
   color: orange;
+}
+
+img.item-img[src=""] {
+  display: none;
 }

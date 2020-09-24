@@ -19,13 +19,14 @@
     </ul>
   </main>
 
-  <script id="movie-template" type="text/x-handlebars-template">
-    <li class="movie">
-      <ul class="movie-info">
-        <h3>Titolo: {{title}}</h3>
+  <script id="result-template" type="text/x-handlebars-template">
+    <li class="results-item">
+      <ul class="item-info">
+        <img class="item-img" src="{{poster_path}}" alt="{{title}}">
+        <h2>{{title}}</h2>
         <li>Titolo Originale: {{original_title}}</li>
         <li>Lingua Originale: {{{original_language}}}</li>
-        <li class="movie-vote">Voto Medio: {{{vote_average}}}</li>
+        <li class="item-vote">Voto Medio: {{{vote_average}}}</li>
       </ul>
     </li>
   </script>

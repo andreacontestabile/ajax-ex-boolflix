@@ -1,11 +1,7 @@
 $(document).ready(function() {
 
-  // Conservo in due variabili gli url relativi all'API di TMDB
-  var urlMovies = "https://api.themoviedb.org/3/search/movie"
-  var urlTV = "https://api.themoviedb.org/3/search/tv";
-
   // Inizializzazione template Handlebars
-  var source = $("#movie-template").html();
+  var source = $("#result-template").html();
   var template = Handlebars.compile(source);
 
   // Evento KEYPRESS (tasto INVIO) campo search
@@ -30,7 +26,11 @@ $(document).ready(function() {
     }
   });
 
-  // Funzione searchMovies
+  // Conservo in due variabili gli url relativi all'API di TMDB
+  var urlMovies = "https://api.themoviedb.org/3/search/movie"
+  var urlTV = "https://api.themoviedb.org/3/search/tv";
+
+  // Funzione generica di ricerca dei risultati
   function search(url, query) {
     // Effettuo la chiamata ajax all'API TMDB.org
     $.ajax(
@@ -55,6 +55,9 @@ $(document).ready(function() {
    );
  }
 
+ // Definisco una variabile che contiene l'url base delle immagini poster
+ var imgUrl = "https://image.tmdb.org/t/p/w185"
+ 
  // Funzione renderMovies
  function renderSearch(results) {
    // Effettuo un ciclo dell'array di risultati ottenuto dalla chiamata ajax
@@ -63,13 +66,18 @@ $(document).ready(function() {
        "title": results[i].title,
        "original_title": results[i].original_title,
        "original_language": renderFlag(results[i].original_language),
-       "vote_average": renderVote(results[i].vote_average)
+       "vote_average": renderVote(results[i].vote_average),
+       "poster_path": imgUrl + results[i].poster_path
      };
      // Se invece l'oggetto ha la proprietà "original_name" (invece di original_title)
      if (results[i].hasOwnProperty("original_name")) {
        // Modifico il context con le nuove proprietà/chiavi
        context.title = results[i].name;
        context.original_title = results[i].original_name;
+     }
+     // Se non ricevo un'immagine valida da mostrare, svuoto l'attributo src (src vuoto è nascosto nel CSS)
+     if (results[i].poster_path == null) {
+       context.poster_path = "";
      }
      // Compilo il template Handlebars passando direttamente ogni oggetto/film (le chiavi corrispondono)
      var html = template(context);
@@ -127,5 +135,5 @@ $(document).ready(function() {
    search(urlMovies, query);
    search(urlTV, query);
  }
- 
+
 });
