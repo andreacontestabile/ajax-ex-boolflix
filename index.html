@@ -8,27 +8,36 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js" charset="utf-8"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <title>Boolflix</title>
 </head>
 <body>
-  <main>
-    <input id="search" type="text"><button id="search-btn">Cerca</button>
-    <div class="movie-results">
-      <h2 class="category-header">Movies</h2>
-      <ul class="movie-list">
-      </ul>
-    </div>
+  <div class="wrapper">
+    <header class="main-header">
+      <img class="logo" src="img/logo.png" alt="Boolflix">
+      <div class="search-bar">
+        <input id="search" type="text">
+        <button id="search-btn">Cerca</button>
+      </div>
+    </header>
+    <main class="main-view">
 
 
-    <div class="tv-results">
-      <h2 class="category-header">TV Shows</h2>
-      <ul class="tv-list">
-      </ul>
-    </div>
+      <div class="movie-results">
+        <h2 class="category-header">Movies</h2>
+        <ul class="movie-list">
+        </ul>
+      </div>
 
-  </main>
+      <div class="tv-results">
+        <h2 class="category-header">TV Shows</h2>
+        <ul class="tv-list">
+        </ul>
+      </div>
 
+    </main>
+  </div>
   <script id="result-template" type="text/x-handlebars-template">
     <li class="results-item">
       <ul class="item-info">

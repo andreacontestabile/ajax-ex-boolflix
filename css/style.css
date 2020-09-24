@@ -5,7 +5,55 @@
 }
 
 body {
-  padding: 60px;
+  font-family: "Lato", sans-serif;
+}
+
+.wrapper {
+  height: 100vh;
+  /* background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url("../img/bg.jpg"); */
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+header.main-header {
+  display: flex;
+  height: 120px;
+  padding: 20px 80px;
+}
+
+header.main-header img.logo {
+  margin-top: 10px;
+  height: 80px;
+}
+
+header.main-header .search-bar {
+  line-height: 80px;
+  margin-left: auto;
+}
+
+header.main-header .search-bar input#search {
+  height: 40px;
+  width: 400px;
+  margin-right: 5px;
+  padding: 0 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #000;
+}
+
+header.main-header .search-bar button#search-btn {
+  height: 42px;
+  padding: 0 25px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  background-color: #E50914;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 20px;
+  color: #fff;
+  vertical-align: middle;
 }
 
 .movie-results {
