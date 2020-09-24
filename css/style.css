@@ -10,7 +10,7 @@ body {
 
 .wrapper {
   height: 100vh;
-  /* background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url("../img/bg.jpg"); */
+  background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url("../img/bg.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -56,29 +56,54 @@ header.main-header .search-bar button#search-btn {
   vertical-align: middle;
 }
 
+main.main-view {
+  padding: 60px 80px;
+  height: calc(100% - 120px);
+  overflow-y: auto;
+}
+
 .movie-results {
   margin-top: 30px;
 }
 
-.movie-results p.no-results {
+p.no-results {
   margin-bottom: 20px;
+  font-weight: 700;
+  color: #fff;
 }
 
 ul.movie-list,
 ul.tv-list {
-  margin-top: 20px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  margin: 20px 0;
   list-style: none;
 }
 
+ul.movie-list::after {
+  content:"";
+  width: 100%;
+  flex: auto;
+}
 h2.category-header {
   display: none;
-  background-color: #000;
+  background-color: #E50914;
   padding: 5px 10px;
+  font-family: "Bebas Neue", sans-serif;
   color: #fff;
+  border-radius: 3px;
 }
 
 li.results-item {
-  margin-bottom: 20px;
+  width: 350px;
+  height: 500px;
+  margin-bottom: 40px;
+  color: #fff;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
 }
 
 ul.item-info {

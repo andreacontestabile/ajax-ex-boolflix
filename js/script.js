@@ -66,7 +66,7 @@ $(document).ready(function() {
  }
 
  // Definisco una variabile che contiene l'url base delle immagini poster
- var imgUrl = "https://image.tmdb.org/t/p/w185"
+ var imgUrl = "https://image.tmdb.org/t/p/w342"
 
  // Funzione renderMovies
  function renderSearch(type, results) {
@@ -104,7 +104,7 @@ $(document).ready(function() {
      }
      // Se non ricevo un'immagine valida da mostrare, svuoto l'attributo src (src vuoto è nascosto nel CSS)
      if (results[i].poster_path == null) {
-       context.poster_path = "";
+       context.poster_path = "img/no_poster.png";
      }
      // Compilo il template Handlebars passando direttamente ogni oggetto (le chiavi corrispondono)
      var html = template(context);

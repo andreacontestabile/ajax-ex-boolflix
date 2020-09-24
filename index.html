@@ -23,7 +23,6 @@
     </header>
     <main class="main-view">
 
-
       <div class="movie-results">
         <h2 class="category-header">Movies</h2>
         <ul class="movie-list">
@@ -39,9 +38,8 @@
     </main>
   </div>
   <script id="result-template" type="text/x-handlebars-template">
-    <li class="results-item">
+    <li class="results-item" style="background-image: url('{{poster_path}}')">
       <ul class="item-info">
-        <img class="item-img" src="{{poster_path}}" alt="{{title}}">
         <h2>{{title}}</h2>
         <li>Titolo Originale: {{original_title}}</li>
         <li>Lingua Originale: {{{original_language}}}</li>
