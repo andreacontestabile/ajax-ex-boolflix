@@ -30,12 +30,22 @@ $(document).ready(function() {
   var urlMovies = "https://api.themoviedb.org/3/search/movie"
   var urlTV = "https://api.themoviedb.org/3/search/tv";
 
-  // Funzione generica di ricerca dei risultati
-  function search(url, query) {
+  // Funzione typeToUrl, converte il tipo di ricerca (stringa) nell'url corretto da utilizzare
+  function typeToUrl(type) {
+    if (type == "movie") {
+      return urlMovies;
+    } else if (type == "tv") {
+      return urlTV;
+    }
+  }
+
+  // Funzione generica di ricerca dei risultati (richiede type e query)
+  function search(type, query) {
     // Effettuo la chiamata ajax all'API TMDB.org
     $.ajax(
       {
-       "url": url,
+        // Ottengo l'url corretto in base al tipo di ricerca
+       "url": typeToUrl(type),
        "method": "GET",
        "data": {
          // Api Key
@@ -45,7 +55,7 @@ $(document).ready(function() {
        },
        "success": function(data) {
          // Al successo, eseguo la funzione renderMovies, passando come argomento l'array dei risultati
-         renderSearch(data.results);
+         renderSearch(type, data.results);
        },
        "error": function() {
          // All'errore, eseguo un alert di errore
@@ -57,9 +67,23 @@ $(document).ready(function() {
 
  // Definisco una variabile che contiene l'url base delle immagini poster
  var imgUrl = "https://image.tmdb.org/t/p/w185"
- 
+
  // Funzione renderMovies
- function renderSearch(results) {
+ function renderSearch(type, results) {
+   // Se non ottengo risultati dalla chiamata
+   if (results.length == 0) {
+     // Creo una stringa per comunicare l'assenza di risultati all'utente
+     var noResults = "<p class='no-results'>Nessun risultato da mostrare! Effettua una nuova ricerca.</p>"
+     // Se il tipo di ricerca effettuata è "movie"
+     if (type == "movie") {
+       // Appendo il messaggio a .movie-results
+       $(".movie-results").append(noResults);
+     // Se il tipo di ricerca effettuata è "tv"
+     } else if (type == "tv") {
+       // Appendo il messaggio a .tv-results
+       $(".tv-results").append(noResults);
+     }
+   }
    // Effettuo un ciclo dell'array di risultati ottenuto dalla chiamata ajax
    for (var i = 0; i < results.length; i++) {
      var context = {
@@ -67,22 +91,25 @@ $(document).ready(function() {
        "original_title": results[i].original_title,
        "original_language": renderFlag(results[i].original_language),
        "vote_average": renderVote(results[i].vote_average),
-       "poster_path": imgUrl + results[i].poster_path
+       "poster_path": imgUrl + results[i].poster_path,
+       "type": "movie"
      };
      // Se invece l'oggetto ha la proprietà "original_name" (invece di original_title)
      if (results[i].hasOwnProperty("original_name")) {
        // Modifico il context con le nuove proprietà/chiavi
        context.title = results[i].name;
        context.original_title = results[i].original_name;
+       context.htmlContainer = $(".tv-list");
+       context.type = "tv";
      }
      // Se non ricevo un'immagine valida da mostrare, svuoto l'attributo src (src vuoto è nascosto nel CSS)
      if (results[i].poster_path == null) {
        context.poster_path = "";
      }
-     // Compilo il template Handlebars passando direttamente ogni oggetto/film (le chiavi corrispondono)
+     // Compilo il template Handlebars passando direttamente ogni oggetto (le chiavi corrispondono)
      var html = template(context);
-     // Faccio l'append del template compilato all'interno della lista dei film
-     $("ul.movie-list").append(html);
+     // Faccio l'append del template compilato all'interno della lista corretta
+     $("."+context.type+"-list").append(html);
    }
  }
 
@@ -124,16 +151,20 @@ $(document).ready(function() {
  function clearPage() {
    // Svuoto la lista dei risultati nella pagina
    $(".movie-list").empty();
+   $(".tv-list").empty();
+   $("p.no-results").remove();
  }
 
  // Funzione clearAndSearch
  function clearAndSearch(query) {
    // Svuoto la lista dei risultati con la funzione clearPage()
    clearPage();
+   // Mostro gli header delle categorie di risultati
+   $("h2.category-header").fadeIn();
    // Eseguo la funzione search (movies e TV) passando i relativi URL
    // e come query di ricerca il contenuto del campo search
-   search(urlMovies, query);
-   search(urlTV, query);
+   search("movie", query);
+   search("tv", query);
  }
 
 });
