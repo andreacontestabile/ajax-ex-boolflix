@@ -90,6 +90,7 @@ $(document).ready(function() {
    for (var i = 0; i < results.length; i++) {
      var context = {
        "type": "movie",
+       "id": results[i].id,
        "title": results[i].title,
        "original_title": results[i].original_title,
        "original_language": renderFlag(results[i].original_language),
@@ -109,11 +110,60 @@ $(document).ready(function() {
      if (results[i].poster_path == null) {
        context.poster_path = "img/no_poster.png";
      }
+     // Eseguo la funzione che ottiene la lista del cast, in base a id e type
+     getCast(results[i].id, type);
      // Compilo il template Handlebars passando direttamente ogni oggetto (le chiavi corrispondono)
      var html = template(context);
      // Faccio l'append del template compilato all'interno della lista corretta
      $("."+context.type+"-list").append(html);
    }
+ }
+
+// Funzione getCast, che ricerca la lista del cast in base all'id del film/serie
+ function getCast(id, type) {
+   // Definisco l'url della chiamata, in base all'id
+   var castUrl = "https://api.themoviedb.org/3/" + type + "/" + id + "/credits";
+   $.ajax(
+     {
+       // Ottengo l'url corretto in base al tipo di ricerca
+      "url": castUrl,
+      "method": "GET",
+      "data": {
+        // Api Key
+        "api_key": "455a355d80afa37b1862eb26f4991d02",
+        // Query di ricerca
+      },
+      "success": function(data) {
+        // Inizializzo una stringa che elencherà il cast
+        var castString = "";
+        // Se la lista del cast ha del contenuto
+        if (data.cast.length > 0 ) {
+          // Eseguo un ciclo per ogni membro del cast, fino ad un massimo di 5
+          for (var i = 0; (i < data.cast.length) && (i < 5); i++) {
+            // Se il campo nome restituito non è vuoto
+            if (data.cast[i].name.length > 0 ) {
+              // Aggiungo solo il nome del membro del cast alla stringa se è l'ultimo
+              if ((i == 4) || (i == data.cast.length - 1)) {
+                castString += data.cast[i].name;
+              } else {
+              // Altrimenti, aggiungo una virgola alla fine.
+                castString += data.cast[i].name + ", ";
+              }
+            }
+          }
+        } else {
+          // Se invece non c'è una lista del cast, rimuovo li.cast
+          $("li.results-item[data-id='"+ id +"']").find("li.cast").remove();
+        }
+        // Infine, aggiungo la lista del cast nell'apposito campo
+        $("li.results-item[data-id='"+ id +"']").find("span.cast-list").append(castString);
+      },
+      "error": function() {
+        // All'errore, eseguo un alert di errore
+
+      }
+    }
+  );
  }
 
  // Funzione renderVote

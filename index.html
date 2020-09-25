@@ -38,13 +38,14 @@
     </main>
   </div>
   <script id="result-template" type="text/x-handlebars-template">
-    <li class="results-item" style="background-image: url('{{poster_path}}')">
+    <li class="results-item" style="background-image: url('{{poster_path}}')" data-id={{id}}>
       <div class="item-overlay">
         <ul class="item-info">
           <h2 class="item-title">{{title}}</h2>
           <li>Titolo Originale: <span>{{original_title}}</span></li>
           <li>Lingua Originale: <span>{{{original_language}}}</span</li>
           <li class="item-vote">Voto Medio: {{{vote_average}}}</li>
+          <li class="cast">Cast: <span class="cast-list">{{cast}}</span></li>
           <li>Trama: <span>{{overview}}</span></li>
         </ul>
       </div>
