@@ -55,7 +55,7 @@ $(document).ready(function() {
        },
        "success": function(data) {
          // Al successo, eseguo la funzione renderMovies, passando come argomento l'array dei risultati
-         renderSearch(type, data.results);
+         renderSearch(type, query, data.results);
        },
        "error": function() {
          // All'errore, eseguo un alert di errore
@@ -69,20 +69,22 @@ $(document).ready(function() {
  var imgUrl = "https://image.tmdb.org/t/p/w342"
 
  // Funzione renderMovies
- function renderSearch(type, results) {
+ function renderSearch(type, query, results) {
    // Se non ottengo risultati dalla chiamata
    if (results.length == 0) {
-     // Creo una stringa per comunicare l'assenza di risultati all'utente
-     var noResults = "<p class='no-results'>Nessun risultato da mostrare! Effettua una nuova ricerca.</p>"
      // Se il tipo di ricerca effettuata è "movie"
      if (type == "movie") {
-       // Appendo il messaggio a .movie-results
-       $(".movie-results").append(noResults);
+       // Il tipo di ricerca sarà relativa ai film
+       var searchType = "Film"
      // Se il tipo di ricerca effettuata è "tv"
      } else if (type == "tv") {
-       // Appendo il messaggio a .tv-results
-       $(".tv-results").append(noResults);
+       // Il tipo di ricerca sarà relativa alle Serie TV
+       var searchType= "Serie TV"
      }
+     // Creo una stringa per comunicare l'assenza di risultati all'utente
+     var noResults = "<p class='no-results'>Nessun risultato per '" + query + "' nella categoria " + searchType +". Effettua una nuova ricerca.</p>";
+     $("ul."+type+"-list").remove();
+     $("."+type+"-results").append(noResults);
    }
    // Effettuo un ciclo dell'array di risultati ottenuto dalla chiamata ajax
    for (var i = 0; i < results.length; i++) {
