@@ -87,12 +87,13 @@ $(document).ready(function() {
    // Effettuo un ciclo dell'array di risultati ottenuto dalla chiamata ajax
    for (var i = 0; i < results.length; i++) {
      var context = {
+       "type": "movie",
        "title": results[i].title,
        "original_title": results[i].original_title,
        "original_language": renderFlag(results[i].original_language),
        "vote_average": renderVote(results[i].vote_average),
        "poster_path": imgUrl + results[i].poster_path,
-       "type": "movie"
+       "overview": results[i].overview
      };
      // Se invece l'oggetto ha la proprietà "original_name" (invece di original_title)
      if (results[i].hasOwnProperty("original_name")) {

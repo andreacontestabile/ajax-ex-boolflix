@@ -24,13 +24,13 @@
     <main class="main-view">
 
       <div class="movie-results">
-        <h2 class="category-header">Movies</h2>
+        <h2 class="category-header">Film</h2>
         <ul class="movie-list">
         </ul>
       </div>
 
       <div class="tv-results">
-        <h2 class="category-header">TV Shows</h2>
+        <h2 class="category-header">Serie TV</h2>
         <ul class="tv-list">
         </ul>
       </div>
@@ -39,12 +39,15 @@
   </div>
   <script id="result-template" type="text/x-handlebars-template">
     <li class="results-item" style="background-image: url('{{poster_path}}')">
-      <ul class="item-info">
-        <h2>{{title}}</h2>
-        <li>Titolo Originale: {{original_title}}</li>
-        <li>Lingua Originale: {{{original_language}}}</li>
-        <li class="item-vote">Voto Medio: {{{vote_average}}}</li>
-      </ul>
+      <div class="item-overlay">
+        <ul class="item-info">
+          <h2 class="item-title">{{title}}</h2>
+          <li>Titolo Originale: <span>{{original_title}}</span></li>
+          <li>Lingua Originale: <span>{{{original_language}}}</span</li>
+          <li class="item-vote">Voto Medio: {{{vote_average}}}</li>
+          <li>Trama: <span>{{overview}}</span></li>
+        </ul>
+      </div>
     </li>
   </script>
   <script src="js/script.js" charset="utf-8"></script>

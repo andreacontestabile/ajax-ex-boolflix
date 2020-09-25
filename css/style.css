@@ -86,16 +86,21 @@ ul.movie-list::after {
   width: 100%;
   flex: auto;
 }
+
 h2.category-header {
   display: none;
   background-color: #E50914;
-  padding: 5px 10px;
+  padding: 5px 15px;
   font-family: "Bebas Neue", sans-serif;
+  font-size: 30px;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 4px #000;
   color: #fff;
   border-radius: 3px;
 }
 
 li.results-item {
+  position: relative;
   width: 350px;
   height: 500px;
   margin-bottom: 40px;
@@ -103,20 +108,49 @@ li.results-item {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  box-shadow: 0 0 20px #000, 0 0 20px #000;
+}
 
+li.results-item .item-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  padding: 20px 0;
+  background-color: rgba(0, 0, 0, 0.95);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+li.results-item:hover .item-overlay {
+  opacity: 1;
 }
 
 ul.item-info {
+  height: 100%;
+  padding: 40px 20px 20px;
   list-style: none;
+  background-size: cover;
+  overflow-y: auto;
+}
+
+ul.item-info li {
+  font-weight: 900;
+  margin-top: 10px;
+}
+
+ul.item-info span {
+  font-weight: 400;
 }
 
 img.language-flag {
-  width: 30px;
+  width: 32px;
   vertical-align: middle;
 }
 
 li.item-vote i {
   color: orange;
+  font-size: 19px;
 }
 
 img.item-img[src=""] {
